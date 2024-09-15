@@ -40,8 +40,4 @@ jobs:
       # Run Selenium WebDriver Tests
       - name: Run Tests
         run: |
-          # Start Selenium Server
-          npx selenium-standalone start &
-
-          # Run tests
-          node dist/testMetaMask.js  # Replace with your compiled JS file
+          node dist/testMetaMask.js
