@@ -86,7 +86,7 @@ async function testMetaMask() {
         await driver.switchTo().window(newestHandles[4]);
 
         // Confirm connection
-        await driver.findElement(By.xpath('//button[contains(text(),"Next")]')).click();
+        // await driver.findElement(By.xpath('//button[contains(text(),"Next")]')).click();
         await driver.findElement(By.xpath('//button[contains(text(),"Confirm")]')).click();
 
         await driver.switchTo().window(newestHandles[3]);

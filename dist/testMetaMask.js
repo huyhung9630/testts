@@ -76,7 +76,7 @@ function testMetaMask() {
             const newestHandles = yield driver.getAllWindowHandles();
             yield driver.switchTo().window(newestHandles[4]);
             // Confirm connection
-            yield driver.findElement(selenium_webdriver_1.By.xpath('//button[contains(text(),"Next")]')).click();
+            // await driver.findElement(By.xpath('//button[contains(text(),"Next")]')).click();
             yield driver.findElement(selenium_webdriver_1.By.xpath('//button[contains(text(),"Confirm")]')).click();
             yield driver.switchTo().window(newestHandles[3]);
             yield driver.findElement(selenium_webdriver_1.By.css('button.css-hnz0pg')).click();
