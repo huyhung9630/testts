@@ -3,41 +3,47 @@ name: Run Selenium WebDriver Tests
 on:
   push:
     branches:
-      - main  # or the branch you want to run the tests on
+      - main
   pull_request:
     branches:
-      - main  # or the branch you want to test for PRs
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      selenium:
-        image: selenium/standalone-chrome:latest
-        ports:
-          - 4444:4444
-
     steps:
-      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Compile TypeScript code
+      # Install Chrome browser
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      # Install ChromeDriver (compatible version)
+      - name: Install ChromeDriver
+        run: |
+          sudo apt-get install -yqq unzip
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d{2,3}')
+          DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
+          wget -N http://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip -d ~/bin/
+          sudo mv -f ~/bin/chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
+
+      # Run Tests
       - name: Compile TypeScript
         run: npx tsc
 
-      # Run Selenium WebDriver Tests
       - name: Run Tests
-        run: |
-          node dist/testMetaMask.js
+        run: node dist/testMetaMask.js
